@@ -28,7 +28,6 @@ stdenv.mkDerivation rec {
 
   postPatch = ''
     sed -i -e "s|DYN_LINKER_FILE|$out/dyn_linker.txt|g" src/multirust
-    sed -i -e "s|PATCHELF_BIN_FILE|$out/patchelf_bin_file.txt|g" src/multirust
     sed -i -e "s|LIB_PATH_FILE|$out/lib_path.txt|g" src/multirust
   '';
 
@@ -55,7 +54,6 @@ stdenv.mkDerivation rec {
 
     echo ${libPath} > $out/lib_path.txt
     cat $NIX_CC/nix-support/dynamic-linker > $out/dyn_linker.txt
-    which patchelf > $out/patchelf_bin_file.txt
   '';
 
   postInstall = ''
