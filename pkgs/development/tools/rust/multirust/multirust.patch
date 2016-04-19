@@ -1,0 +1,61 @@
+--- res/src/multirust	2016-04-16 12:07:10.913063776 -0400
++++ multirust.mod	2016-04-18 20:36:18.170586253 -0400
+@@ -825,6 +825,40 @@
+     exec "$@"
+ }
+ 
++#
++# NixOS uses a different dynamic linker, so we need to inject that into
++# the binaries that multirust creates.
++#
++
++nix_patch_binary() {
++    local _binary="$1"
++
++    # NixOS extra globals, these are patch at install time with the
++    # correct values
++    local _patchelf_bin_file=PATCHELF_BIN_FILE
++    local _dyn_linker_file=DYN_LINKER_FILE
++    local _lib_path_file=LIB_PATH_FILE
++
++    echo $_dyn_linker_file
++    echo $_patchelf_bin_file
++
++    echo $(cat $_dyn_linker_file)
++    echo $(cat $_patchelf_bin_file)
++
++    $(cat $_patchelf_bin_file) \
++         --set-interpreter $(cat $_dyn_linker_file) \
++         --set-rpath $(cat $_lib_path_file) \
++           ${_binary}
++}
++
++nix_patch_binaries() {
++    local _toolchain_dir="$1"
++
++    for binary in cargo rustc rustdoc rust-gdb ; do
++        nix_patch_binary ${_toolchain_dir}/${binary}
++    done
++}
++
+ # Updating toolchains
+ 
+ update_toolchain() {
+@@ -855,6 +889,8 @@
+ 
+     verbose_say "toolchain dir is $_toolchain_dir"
+     call_rustup --prefix="$_toolchain_dir" --spec="$_toolchain" --update-hash-file="$_update_hash_file" --disable-ldconfig
++
++    nix_patch_binaries "$_toolchain_dir"
+ }
+ 
+ install_toolchain() {
+@@ -890,6 +926,8 @@
+         verbose_say "failed to install toolchain"
+         return 1
+     fi
++
++    nix_patch_binaries "$_toolchain_dir"
+ }
+ 
+ remove_toolchain() {

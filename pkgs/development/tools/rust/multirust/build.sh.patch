@@ -1,0 +1,79 @@
+--- res/build.sh	2016-04-16 12:07:10.912063770 -0400
++++ build.sh.mod	2016-04-17 19:29:16.187286978 -0400
+@@ -2,28 +2,44 @@
+ 
+ set -e
+ 
+-ver_date=$(git log -1 --pretty=format:'%ci')
+-ver_hash=$(git rev-parse --short=9 HEAD)
++OUT=$1
+ 
+-git submodule update --init
++ver_date="2016-04-14 19:44:05 -0700"
++ver_hash="ab97f829a"
+ 
+-mkdir -p build
+-rm -Rf build/*
+-mkdir -p build/image/bin
+-cat src/multirust | sed "s/^ *commit_version=$/commit_version=\"$ver_hash $ver_date\"/" > build/image/bin/multirust
+-chmod 0755 build/image/bin/multirust
+-cp src/rustup/rustup.sh build/image/bin/rustup.sh
+-chmod 0755 build/image/bin/rustup.sh
+-cp src/multirustproxy build/image/bin/
+-cp src/multirustproxy build/image/bin/rustc
+-cp src/multirustproxy build/image/bin/cargo
+-cp src/multirustproxy build/image/bin/rustdoc
+-cp src/multirustproxy build/image/bin/rust-gdb
+-mkdir build/overlay
+-cp README.md build/overlay
++#
++# TODO: this is heinus and unpublishable. Need to fetch the
++#  submodules properly
++#
++cd src
++rm -rf rustup
++git clone https://github.com/rust-lang/rustup
++rm -rf rust-installer
++git clone https://github.com/rust-lang/rust-installer
++cd ..
++
++mkdir -p $OUT 
++rm -Rf $OUT/*
++mkdir -p $OUT/image/bin
++
++cat src/multirust | sed "s/^ *commit_version=$/commit_version=\"$ver_hash $ver_date\"/" > $OUT/image/bin/multirust
++chmod 0755 $OUT/image/bin/multirust
++
++cp src/rustup/rustup.sh $OUT/image/bin/rustup.sh
++chmod 0755 $OUT/image/bin/rustup.sh
++
++cp src/multirustproxy $OUT/image/bin/
++cp src/multirustproxy $OUT/image/bin/
++cp src/multirustproxy $OUT/image/bin/rustc
++cp src/multirustproxy $OUT/image/bin/cargo
++cp src/multirustproxy $OUT/image/bin/rustdoc
++cp src/multirustproxy $OUT/image/bin/rust-gdb
++
++mkdir $OUT/overlay
++cp README.md $OUT/overlay
+ 
+ if [ "$(uname -s)" = Darwin ]; then
+-    cp src/multirustproxy build/image/bin/rust-lldb
++    cp src/multirustproxy $OUT/image/bin/rust-lldb
+ fi
+ 
+ sh src/rust-installer/gen-installer.sh \
+@@ -31,9 +47,9 @@
+     --package-name=multirust-0.8.0 \
+     --rel-manifest-dir=rustlib \
+     --success-message=Get-ready-for-Maximum-Rust. \
+-    --image-dir=./build/image \
+-    --work-dir=./build/work \
+-    --output-dir=./build \
+-    --non-installed-overlay=./build/overlay \
++    --image-dir=$OUT/image \
++    --work-dir=$OUT/work \
++    --output-dir=$OUT \
++    --non-installed-overlay=$OUT/overlay \
+     --component-name=multirust \
+     --legacy-manifest-dirs=rustlib,cargo > /dev/null

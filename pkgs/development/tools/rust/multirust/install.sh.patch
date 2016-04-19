@@ -1,0 +1,16 @@
+--- res/install.sh	2016-04-16 12:07:10.912063770 -0400
++++ install.sh.mod	2016-04-16 13:31:10.541705596 -0400
+@@ -1,8 +1,12 @@
+ #!/bin/sh
+ 
++#
++# Expects $OUT to be set as an environment variable
++#
++
+ set -e
+ 
+-installer=build/work/multirust-0.8.0/install.sh
++installer=$OUT/work/multirust-0.8.0/install.sh
+ 
+ if [ ! -e "$installer" ]; then
+     echo 'run ./build.sh first'

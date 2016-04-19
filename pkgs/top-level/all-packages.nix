@@ -16525,4 +16525,6 @@ in
   togglesg-download = callPackage ../tools/misc/togglesg-download { };
 
   discord = callPackage ../applications/networking/instant-messengers/discord { };
+
+  multirust = callPackage ../development/tools/rust/multirust { };
 }
