@@ -1,14 +1,13 @@
 --- res/src/multirust	2016-04-16 12:07:10.913063776 -0400
-+++ multirust.mod	2016-04-18 21:13:54.496609752 -0400
-@@ -1,4 +1,6 @@
++++ multirust.mod	2016-04-18 21:34:35.885979809 -0400
+@@ -1,4 +1,5 @@
 -#!/usr/bin/env bash
 +#! /usr/bin/env nix-shell
-+#! /nix-shell -i bash -p patchelf
-+#! /nix-shell -I nixpkgs=/home/ethan/nixos/nixpkgs
++#! /nix-shell -i bash -p patchelf -I nixpkgs=/home/ethan/nixos/nixpkgs
  
  # <help>
  #
-@@ -825,6 +827,37 @@
+@@ -825,6 +826,37 @@
      exec "$@"
  }
  
@@ -46,7 +45,7 @@
  # Updating toolchains
  
  update_toolchain() {
-@@ -855,6 +888,8 @@
+@@ -855,6 +887,8 @@
  
      verbose_say "toolchain dir is $_toolchain_dir"
      call_rustup --prefix="$_toolchain_dir" --spec="$_toolchain" --update-hash-file="$_update_hash_file" --disable-ldconfig
@@ -55,7 +54,7 @@
  }
  
  install_toolchain() {
-@@ -890,6 +925,8 @@
+@@ -890,6 +924,8 @@
          verbose_say "failed to install toolchain"
          return 1
      fi

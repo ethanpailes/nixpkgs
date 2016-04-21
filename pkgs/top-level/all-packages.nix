@@ -16526,5 +16526,6 @@ in
 
   discord = callPackage ../applications/networking/instant-messengers/discord { };
 
-  multirust = callPackage ../development/tools/rust/multirust { };
+  rustup-rs = callPackage ../development/tools/rust/rustup { };
+
 }

@@ -8,14 +8,15 @@
 
 let
   version = "2016-04-02";
-  rev = "b705d049d78f96bc27c58ccec7902e65d90826bd";
-
+  rev = "83382afc6739852f645a36c792dc7b80b47594cf";
+  # rev = "b705d049d78f96bc27c58ccec7902e65d90826bd";
   src = fetchFromGitHub {
       inherit rev;
 
       owner = "rust-lang";
       repo = "crates.io-index";
-      sha256 = "1aspn79i1rw9migw7j0m12ghdq9cqhq8n2vzxy6hy1l728j3ykdp";
+      sha256 = "1j9xf3sava4mmjlfnwzv6h1hrc9g663zqhcy3hrlmj23q071drl9";
+      # sha256 = "1aspn79i1rw9migw7j0m12ghdq9cqhq8n2vzxy6hy1l728j3ykdp";
   };
 
 in
