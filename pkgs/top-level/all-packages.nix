@@ -16526,6 +16526,8 @@ in
 
   discord = callPackage ../applications/networking/instant-messengers/discord { };
 
+  tomb = callPackage ../os-specific/linux/tomb { };
+
   rustup-rs = callPackage ../development/tools/rust/rustup { };
 
 }
