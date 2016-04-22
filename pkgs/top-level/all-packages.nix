@@ -16443,6 +16443,8 @@ let
 
   mg = callPackage ../applications/editors/mg { };
 
+  tomb = callPackage ../os-specific/linux/tomb {};
+
 };
 # end pkgs_ =
 
